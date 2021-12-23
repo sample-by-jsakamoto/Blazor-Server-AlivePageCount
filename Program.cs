@@ -1,4 +1,5 @@
 ﻿using BlazorServerAlivePageCount.Data;
+using BlazorServerAlivePageCount.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddSingleton<AlivePageCounter>();
 
 var app = builder.Build();
 
