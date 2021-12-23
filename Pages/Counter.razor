@@ -1,4 +1,6 @@
 ﻿@page "/counter"
+@implements IAsyncDisposable
+@inject AlivePageCounter AlivePageCounter
 
 <PageTitle>Counter</PageTitle>
 
@@ -14,5 +16,15 @@
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.AlivePageCounter.IncrementAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await this.AlivePageCounter.DecrementAsync();
     }
 }
