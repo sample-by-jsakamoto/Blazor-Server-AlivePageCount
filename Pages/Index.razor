@@ -1,4 +1,6 @@
 ﻿@page "/"
+@implements IDisposable
+@inject AlivePageCounter AlivePageCounter
 
 <PageTitle>Index</PageTitle>
 
@@ -6,4 +8,26 @@
 
 Welcome to your new app.
 
+<div class="alert alert-primary mt-4">
+    Number of active clients that are opening the "Counter" page = <b>@AlivePageCounter.AlivePageCount</b>
+</div>
+
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        this.AlivePageCounter.AlivePageCountChanged += AlivePageCounter_AlivePageCountChanged;
+    }
+
+    private async ValueTask AlivePageCounter_AlivePageCountChanged(object? sender, EventArgs args)
+    {
+        await this.InvokeAsync(() => this.StateHasChanged());
+    }
+
+    public void Dispose()
+    {
+        this.AlivePageCounter.AlivePageCountChanged -= AlivePageCounter_AlivePageCountChanged;
+    }
+}
